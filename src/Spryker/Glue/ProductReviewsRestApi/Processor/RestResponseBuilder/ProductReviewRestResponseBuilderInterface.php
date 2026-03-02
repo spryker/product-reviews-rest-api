@@ -13,13 +13,6 @@ use Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface;
 
 interface ProductReviewRestResponseBuilderInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\ProductReviewTransfer $productReviewTransfer
-     * @param string $productAbstractSku
-     * @param int $httpStatusCode
-     *
-     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
-     */
     public function createProductReviewRestResponse(
         ProductReviewTransfer $productReviewTransfer,
         string $productAbstractSku,
@@ -49,26 +42,12 @@ interface ProductReviewRestResponseBuilderInterface
      */
     public function createRestResourceCollection(array $indexedProductReviewTransfers, array $productAbstractDataCollection): array;
 
-    /**
-     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
-     */
     public function createProductAbstractSkuMissingErrorResponse(): RestResponseInterface;
 
-    /**
-     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
-     */
     public function createProductAbstractNotFoundErrorResponse(): RestResponseInterface;
 
-    /**
-     * @param string $idProductReview
-     *
-     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
-     */
     public function createProductReviewNotFoundErrorResponse(string $idProductReview): RestResponseInterface;
 
-    /**
-     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
-     */
     public function createNotImplementedErrorResponse(): RestResponseInterface;
 
     /**

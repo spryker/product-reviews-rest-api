@@ -17,20 +17,11 @@ class ProductReviewsAbstractProductsResourceExpander implements ProductReviewsAb
      */
     protected $productReviewStorageClient;
 
-    /**
-     * @param \Spryker\Glue\ProductReviewsRestApi\Dependency\Client\ProductReviewsRestApiToProductReviewStorageClientInterface $productReviewStorageClient
-     */
     public function __construct(ProductReviewsRestApiToProductReviewStorageClientInterface $productReviewStorageClient)
     {
         $this->productReviewStorageClient = $productReviewStorageClient;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\AbstractProductsRestAttributesTransfer $abstractProductsRestAttributesTransfer
-     * @param int $idProductAbstract
-     *
-     * @return \Generated\Shared\Transfer\AbstractProductsRestAttributesTransfer
-     */
     public function expand(
         AbstractProductsRestAttributesTransfer $abstractProductsRestAttributesTransfer,
         int $idProductAbstract

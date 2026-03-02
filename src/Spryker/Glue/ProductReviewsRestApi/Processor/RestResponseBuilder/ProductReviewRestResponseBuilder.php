@@ -41,10 +41,6 @@ class ProductReviewRestResponseBuilder implements ProductReviewRestResponseBuild
      */
     protected $productReviewMapper;
 
-    /**
-     * @param \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceBuilderInterface $restResourceBuilder
-     * @param \Spryker\Glue\ProductReviewsRestApi\Processor\Mapper\ProductReviewMapperInterface $productReviewMapper
-     */
     public function __construct(
         RestResourceBuilderInterface $restResourceBuilder,
         ProductReviewMapperInterface $productReviewMapper
@@ -53,13 +49,6 @@ class ProductReviewRestResponseBuilder implements ProductReviewRestResponseBuild
         $this->productReviewMapper = $productReviewMapper;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\ProductReviewTransfer $productReviewTransfer
-     * @param string $productAbstractSku
-     * @param int $httpStatusCode
-     *
-     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
-     */
     public function createProductReviewRestResponse(
         ProductReviewTransfer $productReviewTransfer,
         string $productAbstractSku,
@@ -120,9 +109,6 @@ class ProductReviewRestResponseBuilder implements ProductReviewRestResponseBuild
         return $productReviewRestResourceCollection;
     }
 
-    /**
-     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
-     */
     public function createProductAbstractSkuMissingErrorResponse(): RestResponseInterface
     {
         $restErrorTransfer = (new RestErrorMessageTransfer())
@@ -133,9 +119,6 @@ class ProductReviewRestResponseBuilder implements ProductReviewRestResponseBuild
         return $this->restResourceBuilder->createRestResponse()->addError($restErrorTransfer);
     }
 
-    /**
-     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
-     */
     public function createProductAbstractNotFoundErrorResponse(): RestResponseInterface
     {
         $restErrorTransfer = (new RestErrorMessageTransfer())
@@ -146,11 +129,6 @@ class ProductReviewRestResponseBuilder implements ProductReviewRestResponseBuild
         return $this->restResourceBuilder->createRestResponse()->addError($restErrorTransfer);
     }
 
-    /**
-     * @param string $idProductReview
-     *
-     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
-     */
     public function createProductReviewNotFoundErrorResponse(string $idProductReview): RestResponseInterface
     {
         $restErrorMessageTransfer = (new RestErrorMessageTransfer())
@@ -161,9 +139,6 @@ class ProductReviewRestResponseBuilder implements ProductReviewRestResponseBuild
         return $this->restResourceBuilder->createRestResponse()->addError($restErrorMessageTransfer);
     }
 
-    /**
-     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
-     */
     public function createNotImplementedErrorResponse(): RestResponseInterface
     {
         $restErrorTransfer = (new RestErrorMessageTransfer())
@@ -190,12 +165,6 @@ class ProductReviewRestResponseBuilder implements ProductReviewRestResponseBuild
         return $restResponse;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\ProductReviewTransfer $productReviewTransfer
-     * @param string $productAbstractSku
-     *
-     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResourceInterface
-     */
     protected function createProductReviewRestResource(ProductReviewTransfer $productReviewTransfer, string $productAbstractSku): RestResourceInterface
     {
         $restProductReviewsAttributesTransfer = $this->productReviewMapper
@@ -216,12 +185,6 @@ class ProductReviewRestResponseBuilder implements ProductReviewRestResponseBuild
         );
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\ProductReviewTransfer $productReviewTransfer
-     * @param string $productAbstractSku
-     *
-     * @return string
-     */
     protected function createSelfLink(ProductReviewTransfer $productReviewTransfer, string $productAbstractSku): string
     {
         return sprintf(

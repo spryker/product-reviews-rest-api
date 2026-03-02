@@ -48,11 +48,6 @@ class ProductAbstractReviewResourceRelationshipExpander implements ProductAbstra
      */
     protected $productReviewsRestApiConfig;
 
-    /**
-     * @param \Spryker\Glue\ProductReviewsRestApi\Processor\Reader\ProductReviewReaderInterface $productReviewReader
-     * @param \Spryker\Glue\ProductReviewsRestApi\Dependency\Client\ProductReviewsRestApiToProductStorageClientInterface $productStorageClient
-     * @param \Spryker\Glue\ProductReviewsRestApi\ProductReviewsRestApiConfig $productReviewsRestApiConfig
-     */
     public function __construct(
         ProductReviewReaderInterface $productReviewReader,
         ProductReviewsRestApiToProductStorageClientInterface $productStorageClient,
@@ -142,9 +137,6 @@ class ProductAbstractReviewResourceRelationshipExpander implements ProductAbstra
         return $skus;
     }
 
-    /**
-     * @return \Generated\Shared\Transfer\FilterTransfer
-     */
     protected function createFilterTransfer(): FilterTransfer
     {
         return (new FilterTransfer())

@@ -80,12 +80,6 @@ class ProductReviewReader implements ProductReviewReaderInterface
      */
     protected $productReviewsRestApiConfig;
 
-    /**
-     * @param \Spryker\Glue\ProductReviewsRestApi\Processor\RestResponseBuilder\ProductReviewRestResponseBuilderInterface $productReviewRestResponseBuilder
-     * @param \Spryker\Glue\ProductReviewsRestApi\Dependency\Client\ProductReviewsRestApiToProductStorageClientInterface $productStorageClient
-     * @param \Spryker\Glue\ProductReviewsRestApi\Dependency\Client\ProductReviewsRestApiToProductReviewClientInterface $productReviewClient
-     * @param \Spryker\Glue\ProductReviewsRestApi\ProductReviewsRestApiConfig $productReviewsRestApiConfig
-     */
     public function __construct(
         ProductReviewRestResponseBuilderInterface $productReviewRestResponseBuilder,
         ProductReviewsRestApiToProductStorageClientInterface $productStorageClient,
@@ -98,11 +92,6 @@ class ProductReviewReader implements ProductReviewReaderInterface
         $this->productReviewsRestApiConfig = $productReviewsRestApiConfig;
     }
 
-    /**
-     * @param \Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface $restRequest
-     *
-     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
-     */
     public function getProductReviews(RestRequestInterface $restRequest): RestResponseInterface
     {
         $parentResource = $restRequest->findParentResourceByType(ProductReviewsRestApiConfig::RESOURCE_ABSTRACT_PRODUCTS);
@@ -227,11 +216,6 @@ class ProductReviewReader implements ProductReviewReaderInterface
         return $productReviews;
     }
 
-    /**
-     * @param \Spryker\Glue\GlueApplication\Rest\Request\Data\PageInterface $page
-     *
-     * @return array
-     */
     protected function createRequestParamsWithPaginationParameters(PageInterface $page): array
     {
         return [

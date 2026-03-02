@@ -51,11 +51,6 @@ class ProductReviewCreator implements ProductReviewCreatorInterface
      */
     protected $productStorageClient;
 
-    /**
-     * @param \Spryker\Glue\ProductReviewsRestApi\Processor\RestResponseBuilder\ProductReviewRestResponseBuilderInterface $productReviewRestResponseBuilder
-     * @param \Spryker\Glue\ProductReviewsRestApi\Dependency\Client\ProductReviewsRestApiToProductReviewClientInterface $productReviewClient
-     * @param \Spryker\Glue\ProductReviewsRestApi\Dependency\Client\ProductReviewsRestApiToProductStorageClientInterface $productStorageClient
-     */
     public function __construct(
         ProductReviewRestResponseBuilderInterface $productReviewRestResponseBuilder,
         ProductReviewsRestApiToProductReviewClientInterface $productReviewClient,
@@ -66,12 +61,6 @@ class ProductReviewCreator implements ProductReviewCreatorInterface
         $this->productStorageClient = $productStorageClient;
     }
 
-    /**
-     * @param \Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface $restRequest
-     * @param \Generated\Shared\Transfer\RestProductReviewsAttributesTransfer $restProductReviewsAttributesTransfer
-     *
-     * @return \Spryker\Glue\GlueApplication\Rest\JsonApi\RestResponseInterface
-     */
     public function createProductReview(
         RestRequestInterface $restRequest,
         RestProductReviewsAttributesTransfer $restProductReviewsAttributesTransfer
@@ -112,13 +101,6 @@ class ProductReviewCreator implements ProductReviewCreatorInterface
             );
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\RestProductReviewsAttributesTransfer $restProductReviewsAttributesTransfer
-     * @param int $idProductAbstract
-     * @param \Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface $restRequest
-     *
-     * @return \Generated\Shared\Transfer\ProductReviewRequestTransfer
-     */
     protected function createProductReviewRequestTransfer(
         RestProductReviewsAttributesTransfer $restProductReviewsAttributesTransfer,
         int $idProductAbstract,

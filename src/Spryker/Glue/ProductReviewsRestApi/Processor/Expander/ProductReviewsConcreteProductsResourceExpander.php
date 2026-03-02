@@ -31,10 +31,6 @@ class ProductReviewsConcreteProductsResourceExpander implements ProductReviewsCo
      */
     protected $productStorageClient;
 
-    /**
-     * @param \Spryker\Glue\ProductReviewsRestApi\Dependency\Client\ProductReviewsRestApiToProductReviewStorageClientInterface $productReviewStorageClient
-     * @param \Spryker\Glue\ProductReviewsRestApi\Dependency\Client\ProductReviewsRestApiToProductStorageClientInterface $productStorageClient
-     */
     public function __construct(
         ProductReviewsRestApiToProductReviewStorageClientInterface $productReviewStorageClient,
         ProductReviewsRestApiToProductStorageClientInterface $productStorageClient
@@ -43,13 +39,6 @@ class ProductReviewsConcreteProductsResourceExpander implements ProductReviewsCo
         $this->productStorageClient = $productStorageClient;
     }
 
-    /**
-     * @param \Generated\Shared\Transfer\ConcreteProductsRestAttributesTransfer $concreteProductsRestAttributesTransfer
-     * @param int $idProductConcrete
-     * @param \Spryker\Glue\GlueApplication\Rest\Request\Data\RestRequestInterface $restRequest
-     *
-     * @return \Generated\Shared\Transfer\ConcreteProductsRestAttributesTransfer
-     */
     public function expand(
         ConcreteProductsRestAttributesTransfer $concreteProductsRestAttributesTransfer,
         int $idProductConcrete,

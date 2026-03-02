@@ -35,9 +35,6 @@ class ProductReviewsRelationshipByProductAbstractSkuPlugin extends AbstractPlugi
             ->addRelationshipsByAbstractSku($resources, $restRequest);
     }
 
-    /**
-     * @return string
-     */
     public function getRelationshipResourceType(): string
     {
         return ProductReviewsRestApiConfig::RESOURCE_PRODUCT_REVIEWS;

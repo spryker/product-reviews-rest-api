@@ -20,11 +20,6 @@ interface ProductReviewsRestApiToProductReviewClientInterface
      */
     public function findProductReviewsInSearch(ProductReviewSearchRequestTransfer $productReviewSearchRequestTransfer);
 
-    /**
-     * @param \Generated\Shared\Transfer\BulkProductReviewSearchRequestTransfer $bulkProductReviewSearchRequestTransfer
-     *
-     * @return array
-     */
     public function getBulkProductReviewsFromSearch(BulkProductReviewSearchRequestTransfer $bulkProductReviewSearchRequestTransfer): array;
 
     /**

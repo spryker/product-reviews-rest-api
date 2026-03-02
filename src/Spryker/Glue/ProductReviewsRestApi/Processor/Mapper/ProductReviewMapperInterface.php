@@ -12,12 +12,6 @@ use Generated\Shared\Transfer\RestProductReviewsAttributesTransfer;
 
 interface ProductReviewMapperInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\ProductReviewTransfer $productReviewTransfer
-     * @param \Generated\Shared\Transfer\RestProductReviewsAttributesTransfer $restProductReviewsAttributesTransfer
-     *
-     * @return \Generated\Shared\Transfer\RestProductReviewsAttributesTransfer
-     */
     public function mapProductReviewTransferToRestProductReviewsAttributesTransfer(
         ProductReviewTransfer $productReviewTransfer,
         RestProductReviewsAttributesTransfer $restProductReviewsAttributesTransfer

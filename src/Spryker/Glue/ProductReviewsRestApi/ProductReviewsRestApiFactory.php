@@ -34,9 +34,6 @@ use Spryker\Glue\ProductReviewsRestApi\Processor\RestResponseBuilder\ProductRevi
  */
 class ProductReviewsRestApiFactory extends AbstractFactory
 {
-    /**
-     * @return \Spryker\Glue\ProductReviewsRestApi\Processor\Reader\ProductReviewReaderInterface
-     */
     public function createProductReviewReader(): ProductReviewReaderInterface
     {
         return new ProductReviewReader(
@@ -47,9 +44,6 @@ class ProductReviewsRestApiFactory extends AbstractFactory
         );
     }
 
-    /**
-     * @return \Spryker\Glue\ProductReviewsRestApi\Processor\Creator\ProductReviewCreatorInterface
-     */
     public function createProductReviewCreator(): ProductReviewCreatorInterface
     {
         return new ProductReviewCreator(
@@ -59,17 +53,11 @@ class ProductReviewsRestApiFactory extends AbstractFactory
         );
     }
 
-    /**
-     * @return \Spryker\Glue\ProductReviewsRestApi\Processor\Mapper\ProductReviewMapperInterface
-     */
     public function createProductReviewMapper(): ProductReviewMapperInterface
     {
         return new ProductReviewMapper();
     }
 
-    /**
-     * @return \Spryker\Glue\ProductReviewsRestApi\Processor\Expander\ProductReviewsConcreteProductsResourceExpanderInterface
-     */
     public function createProductReviewsConcreteProductsResourceExpander(): ProductReviewsConcreteProductsResourceExpanderInterface
     {
         return new ProductReviewsConcreteProductsResourceExpander(
@@ -78,17 +66,11 @@ class ProductReviewsRestApiFactory extends AbstractFactory
         );
     }
 
-    /**
-     * @return \Spryker\Glue\ProductReviewsRestApi\Processor\Expander\ProductReviewsAbstractProductsResourceExpanderInterface
-     */
     public function createProductReviewsAbstractProductsResourceExpander(): ProductReviewsAbstractProductsResourceExpanderInterface
     {
         return new ProductReviewsAbstractProductsResourceExpander($this->getProductReviewStorageClient());
     }
 
-    /**
-     * @return \Spryker\Glue\ProductReviewsRestApi\Processor\Expander\ProductAbstractReviewResourceRelationshipExpanderInterface
-     */
     public function createProductAbstractReviewResourceRelationshipExpander(): ProductAbstractReviewResourceRelationshipExpanderInterface
     {
         return new ProductAbstractReviewResourceRelationshipExpander(
@@ -98,9 +80,6 @@ class ProductReviewsRestApiFactory extends AbstractFactory
         );
     }
 
-    /**
-     * @return \Spryker\Glue\ProductReviewsRestApi\Processor\Expander\ProductConcreteReviewResourceRelationshipExpanderInterface
-     */
     public function createProductConcreteReviewResourceRelationshipExpander(): ProductConcreteReviewResourceRelationshipExpanderInterface
     {
         return new ProductConcreteReviewResourceRelationshipExpander(
@@ -111,9 +90,6 @@ class ProductReviewsRestApiFactory extends AbstractFactory
         );
     }
 
-    /**
-     * @return \Spryker\Glue\ProductReviewsRestApi\Processor\RestResponseBuilder\ProductReviewRestResponseBuilderInterface
-     */
     public function createProductReviewRestResponseBuilder(): ProductReviewRestResponseBuilderInterface
     {
         return new ProductReviewRestResponseBuilder(
@@ -122,33 +98,21 @@ class ProductReviewsRestApiFactory extends AbstractFactory
         );
     }
 
-    /**
-     * @return \Spryker\Glue\ProductReviewsRestApi\Dependency\Client\ProductReviewsRestApiToProductReviewStorageClientInterface
-     */
     public function getProductReviewStorageClient(): ProductReviewsRestApiToProductReviewStorageClientInterface
     {
         return $this->getProvidedDependency(ProductReviewsRestApiDependencyProvider::CLIENT_PRODUCT_REVIEW_STORAGE);
     }
 
-    /**
-     * @return \Spryker\Glue\ProductReviewsRestApi\Dependency\Client\ProductReviewsRestApiToProductStorageClientInterface
-     */
     public function getProductStorageClient(): ProductReviewsRestApiToProductStorageClientInterface
     {
         return $this->getProvidedDependency(ProductReviewsRestApiDependencyProvider::CLIENT_PRODUCT_STORAGE);
     }
 
-    /**
-     * @return \Spryker\Glue\ProductReviewsRestApi\Dependency\Client\ProductReviewsRestApiToStoreClientInterface
-     */
     public function getStoreClient(): ProductReviewsRestApiToStoreClientInterface
     {
         return $this->getProvidedDependency(ProductReviewsRestApiDependencyProvider::CLIENT_STORE);
     }
 
-    /**
-     * @return \Spryker\Glue\ProductReviewsRestApi\Dependency\Client\ProductReviewsRestApiToProductReviewClientInterface
-     */
     public function getProductReviewClient(): ProductReviewsRestApiToProductReviewClientInterface
     {
         return $this->getProvidedDependency(ProductReviewsRestApiDependencyProvider::CLIENT_PRODUCT_REVIEW);
