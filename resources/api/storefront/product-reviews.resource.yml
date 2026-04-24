@@ -1,0 +1,74 @@
+resource:
+    name: ProductReviews
+    shortName: product-reviews
+    description: 'Storefront product reviews'
+
+    provider: Spryker\Glue\ProductReviewsRestApi\Api\Storefront\Provider\ProductReviewsStorefrontProvider
+
+    paginationEnabled: false
+
+    operations:
+        - type: GetCollection
+          uriTemplate: /abstract-products/{abstractProductSku}/product-reviews
+          description: 'Retrieve reviews for an abstract product'
+
+        - type: GetCollection
+          uriTemplate: /concrete-products/{concreteProductSku}/product-reviews
+          description: 'Retrieve reviews for a concrete product'
+
+    includableIn:
+        - resource: AbstractProducts
+          relationshipName: product-reviews
+          uriVariableMappings:
+              sku: abstractProductSku
+
+        - resource: ConcreteProducts
+          relationshipName: product-reviews
+          uriVariableMappings:
+              sku: concreteProductSku
+
+    properties:
+        idProductReview:
+            type: string
+            identifier: true
+            writable: false
+            readable: true
+            description: 'Product review identifier'
+            openapiContext:
+                example: '1'
+
+        rating:
+            type: integer
+            writable: false
+            readable: true
+            required: false
+            description: 'Rating given in the review'
+            openapiContext:
+                example: 5
+
+        nickname:
+            type: string
+            writable: false
+            readable: true
+            required: false
+            description: 'Reviewer nickname'
+            openapiContext:
+                example: 'Spencer'
+
+        summary:
+            type: string
+            writable: false
+            readable: true
+            required: false
+            description: 'Review summary'
+            openapiContext:
+                example: 'Great camera!'
+
+        description:
+            type: string
+            writable: false
+            readable: true
+            required: false
+            description: 'Full review text'
+            openapiContext:
+                example: 'This camera has been perfect for my needs. Image quality is excellent, the controls are intuitive, and the battery life is better than expected.'

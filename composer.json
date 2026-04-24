@@ -18,7 +18,11 @@
         "spryker/transfer": "^3.42.0"
     },
     "require-dev": {
+        "spryker/api-platform": "*",
         "spryker/code-sniffer": "*"
+    },
+    "suggest": {
+        "spryker/api-platform": "Required to expose API Platform resources."
     },
     "autoload": {
         "psr-4": {
