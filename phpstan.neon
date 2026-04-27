@@ -1,6 +1,13 @@
 parameters:
+    level: 7
+    reportUnmatchedIgnoredErrors: false
     ignoreErrors:
         -
             identifier: missingType.iterableValue
         - '#PHPDoc tag @Glue has invalid value#'
-    level: 7
+#        API Platform Generated resource classes are intentionally excluded from generation
+#        (see config/GlueStorefront/packages/spryker_api_platform.php).
+        - '#invalid type Generated\\Api\\Storefront\\ProductReviewsStorefrontResource\.#'
+        - '#invalid return type Generated\\Api\\Storefront\\ProductReviewsStorefrontResource\.#'
+        - '#unknown class Generated\\Api\\Storefront\\ProductReviewsStorefrontResource\.#'
+        - '#Instantiated class Generated\\Api\\Storefront\\ProductReviewsStorefrontResource not found\.#'
