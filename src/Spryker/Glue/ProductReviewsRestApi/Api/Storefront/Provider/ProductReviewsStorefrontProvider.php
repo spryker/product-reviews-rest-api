@@ -15,6 +15,7 @@ use Generated\Shared\Transfer\ProductReviewTransfer;
 use Spryker\ApiPlatform\State\Provider\AbstractStorefrontProvider;
 use Spryker\Client\ProductReview\ProductReviewClientInterface;
 use Spryker\Client\ProductStorage\ProductStorageClientInterface;
+use Spryker\Glue\ProductReviewsRestApi\Api\Storefront\Exception\ProductReviewsExceptionFactory;
 
 class ProductReviewsStorefrontProvider extends AbstractStorefrontProvider
 {
@@ -28,11 +29,14 @@ class ProductReviewsStorefrontProvider extends AbstractStorefrontProvider
 
     protected const string PRODUCT_REVIEWS_KEY = 'productReviews';
 
+    protected const string CONCRETE_PRODUCTS_PATH_PREFIX = '/concrete-products/';
+
     protected const int DEFAULT_REVIEWS_PER_PAGE = 10;
 
     public function __construct(
         protected ProductStorageClientInterface $productStorageClient,
         protected ProductReviewClientInterface $productReviewClient,
+        protected ProductReviewsExceptionFactory $exceptionFactory = new ProductReviewsExceptionFactory(),
     ) {
     }
 
@@ -50,7 +54,7 @@ class ProductReviewsStorefrontProvider extends AbstractStorefrontProvider
         $result = $this->productReviewClient->findProductReviewsInSearch(
             (new ProductReviewSearchRequestTransfer())
                 ->setIdProductAbstract($idProductAbstract)
-                ->setRequestParams(['page' => 1, 'ipp' => static::DEFAULT_REVIEWS_PER_PAGE]),
+                ->setRequestParams($this->buildSearchPaginationRequestParams(static::DEFAULT_REVIEWS_PER_PAGE)),
         );
 
         $reviews = $result[static::PRODUCT_REVIEWS_KEY] ?? [];
@@ -69,27 +73,22 @@ class ProductReviewsStorefrontProvider extends AbstractStorefrontProvider
 
     protected function resolveIdProductAbstract(): ?int
     {
-        $uriVariables = $this->getUriVariables();
         $localeName = $this->getLocale()->getLocaleNameOrFail();
 
-        if (isset($uriVariables[static::URI_VAR_ABSTRACT_SKU])) {
-            $data = $this->productStorageClient->findProductAbstractStorageDataByMapping(
-                static::MAPPING_TYPE_SKU,
-                (string)$uriVariables[static::URI_VAR_ABSTRACT_SKU],
-                $localeName,
-            );
+        if ($this->isConcreteProductPath()) {
+            // Concrete-products path is reached only via `?include=product-reviews` from
+            // ConcreteProducts (no standalone /concrete-products/{sku}/product-reviews route).
+            // ConcreteProducts always provides a non-empty `sku`, so empty here is unexpected
+            // and is treated defensively as "no reviews".
+            $sku = (string)($this->getUriVariables()[static::URI_VAR_CONCRETE_SKU] ?? '');
 
-            if ($data === null) {
+            if ($sku === '') {
                 return null;
             }
 
-            return (int)($data[static::KEY_ID_PRODUCT_ABSTRACT] ?? 0) ?: null;
-        }
-
-        if (isset($uriVariables[static::URI_VAR_CONCRETE_SKU])) {
             $data = $this->productStorageClient->findProductConcreteStorageDataByMapping(
                 static::MAPPING_TYPE_SKU,
-                (string)$uriVariables[static::URI_VAR_CONCRETE_SKU],
+                $sku,
                 $localeName,
             );
 
@@ -100,7 +99,28 @@ class ProductReviewsStorefrontProvider extends AbstractStorefrontProvider
             return (int)($data[static::KEY_ID_PRODUCT_ABSTRACT] ?? 0) ?: null;
         }
 
-        return null;
+        $sku = (string)($this->getUriVariables()[static::URI_VAR_ABSTRACT_SKU] ?? '');
+
+        if ($sku === '') {
+            throw $this->exceptionFactory->createMissingAbstractProductSkuException();
+        }
+
+        $data = $this->productStorageClient->findProductAbstractStorageDataByMapping(
+            static::MAPPING_TYPE_SKU,
+            $sku,
+            $localeName,
+        );
+
+        if ($data === null) {
+            return null;
+        }
+
+        return (int)($data[static::KEY_ID_PRODUCT_ABSTRACT] ?? 0) ?: null;
+    }
+
+    protected function isConcreteProductPath(): bool
+    {
+        return str_starts_with($this->getRequest()->getPathInfo(), static::CONCRETE_PRODUCTS_PATH_PREFIX);
     }
 
     protected function mapReviewToResource(ProductReviewTransfer $review): ProductReviewsStorefrontResource

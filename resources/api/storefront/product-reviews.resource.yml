@@ -5,16 +5,19 @@ resource:
 
     provider: Spryker\Glue\ProductReviewsRestApi\Api\Storefront\Provider\ProductReviewsStorefrontProvider
 
-    paginationEnabled: false
+    paginationEnabled: true
+    paginationClientEnabled: true
+    paginationItemsPerPage: 10
+    paginationMaximumItemsPerPage: 100
 
     operations:
         - type: GetCollection
+          name: getProductReviewsByAbstractProductSku
           uriTemplate: /abstract-products/{abstractProductSku}/product-reviews
           description: 'Retrieve reviews for an abstract product'
-
-        - type: GetCollection
-          uriTemplate: /concrete-products/{concreteProductSku}/product-reviews
-          description: 'Retrieve reviews for a concrete product'
+          uriVariables:
+              abstractProductSku:
+                  fromClass: AbstractProductsStorefrontResource
 
     includableIn:
         - resource: AbstractProducts
