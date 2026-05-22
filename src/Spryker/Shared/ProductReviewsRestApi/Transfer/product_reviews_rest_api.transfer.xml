@@ -55,6 +55,10 @@
     <transfer name="ProductReview">
         <property name="fkProductAbstract" type="int"/>
         <property name="idProductReview" type="int"/>
+        <property name="rating" type="int"/>
+        <property name="nickname" type="string"/>
+        <property name="summary" type="string"/>
+        <property name="description" type="string"/>
     </transfer>
 
     <transfer name="Store">
@@ -69,6 +73,10 @@
 
     <transfer name="ProductReviewError">
         <property name="message" type="string" description="A message providing information, success, or error details."/>
+    </transfer>
+
+    <transfer name="Locale">
+        <property name="localeName" type="string"/>
     </transfer>
 
 </transfers>

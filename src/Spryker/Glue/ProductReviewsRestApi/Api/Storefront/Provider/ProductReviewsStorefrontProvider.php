@@ -27,7 +27,19 @@ class ProductReviewsStorefrontProvider extends AbstractStorefrontProvider
 
     protected const string URI_VAR_CONCRETE_SKU = 'concreteProductSku';
 
+    protected const string URI_VAR_ID_PRODUCT_REVIEW = 'idProductReview';
+
     protected const string PRODUCT_REVIEWS_KEY = 'productReviews';
+
+    /**
+     * @uses \Spryker\Client\ProductReview\Plugin\Elasticsearch\ResultFormatter\PaginatedProductReviewsResultFormatterPlugin::NAME
+     */
+    protected const string PAGINATION_KEY = 'pagination';
+
+    /**
+     * @uses \Spryker\Client\ProductReview\Plugin\Elasticsearch\QueryExpander\FilterByReviewIdQueryExpanderPlugin::REQUEST_PARAM_ID_PRODUCT_REVIEW
+     */
+    protected const string REQUEST_PARAM_ID_PRODUCT_REVIEW = 'idProductReview';
 
     protected const string CONCRETE_PRODUCTS_PATH_PREFIX = '/concrete-products/';
 
@@ -36,7 +48,7 @@ class ProductReviewsStorefrontProvider extends AbstractStorefrontProvider
     public function __construct(
         protected ProductStorageClientInterface $productStorageClient,
         protected ProductReviewClientInterface $productReviewClient,
-        protected ProductReviewsExceptionFactory $exceptionFactory = new ProductReviewsExceptionFactory(),
+        protected ProductReviewsExceptionFactory $exceptionFactory,
     ) {
     }
 
@@ -51,13 +63,20 @@ class ProductReviewsStorefrontProvider extends AbstractStorefrontProvider
             return [];
         }
 
+        $limit = $this->getPaginationLimit(static::DEFAULT_REVIEWS_PER_PAGE);
+        $offset = $this->getPaginationOffset();
+
         $result = $this->productReviewClient->findProductReviewsInSearch(
             (new ProductReviewSearchRequestTransfer())
                 ->setIdProductAbstract($idProductAbstract)
-                ->setRequestParams($this->buildSearchPaginationRequestParams(static::DEFAULT_REVIEWS_PER_PAGE)),
+                ->setRequestParams([
+                    static::QUERY_PARAMETER_OFFSET => $offset,
+                    static::QUERY_PARAMETER_LIMIT => $limit,
+                ]),
         );
 
         $reviews = $result[static::PRODUCT_REVIEWS_KEY] ?? [];
+        $abstractProductSku = (string)($this->getUriVariables()[static::URI_VAR_ABSTRACT_SKU] ?? '');
         $resources = [];
 
         foreach ($reviews as $review) {
@@ -65,12 +84,59 @@ class ProductReviewsStorefrontProvider extends AbstractStorefrontProvider
                 continue;
             }
 
-            $resources[] = $this->mapReviewToResource($review);
+            $resources[] = $this->mapReviewToResource($review, $abstractProductSku);
+        }
+
+        if ($resources !== []) {
+            $totalCount = (int)($result[static::PAGINATION_KEY]?->getNumFound() ?? count($resources));
+            // Consumed by Spryker\ApiPlatform\EventSubscriber\PaginationLinksResponseSubscriber
+            // to emit JSON:API top-level pagination links (first/last/prev/next).
+            $resources[0]->pagination = $this->calculatePagination($offset, $limit, $totalCount);
         }
 
         return $resources;
     }
 
+    /**
+     * @throws \Spryker\ApiPlatform\Exception\GlueApiException
+     *
+     * @return \Generated\Api\Storefront\ProductReviewsStorefrontResource|null
+     */
+    protected function provideItem(): ?object
+    {
+        $idProductAbstract = $this->resolveIdProductAbstract();
+
+        if ($idProductAbstract === null) {
+            throw $this->exceptionFactory->createProductReviewNotFoundException();
+        }
+
+        $idProductReview = (string)($this->getUriVariables()[static::URI_VAR_ID_PRODUCT_REVIEW] ?? '');
+
+        if ($idProductReview === '') {
+            throw $this->exceptionFactory->createProductReviewNotFoundException();
+        }
+
+        $result = $this->productReviewClient->findProductReviewsInSearch(
+            (new ProductReviewSearchRequestTransfer())
+                ->setIdProductAbstract($idProductAbstract)
+                ->setRequestParams([static::REQUEST_PARAM_ID_PRODUCT_REVIEW => $idProductReview]),
+        );
+
+        $review = $this->findReviewById($result[static::PRODUCT_REVIEWS_KEY] ?? [], $idProductReview);
+
+        if ($review === null) {
+            throw $this->exceptionFactory->createProductReviewNotFoundException();
+        }
+
+        return $this->mapReviewToResource(
+            $review,
+            (string)($this->getUriVariables()[static::URI_VAR_ABSTRACT_SKU] ?? ''),
+        );
+    }
+
+    /**
+     * @throws \Spryker\ApiPlatform\Exception\GlueApiException
+     */
     protected function resolveIdProductAbstract(): ?int
     {
         $localeName = $this->getLocale()->getLocaleNameOrFail();
@@ -112,7 +178,7 @@ class ProductReviewsStorefrontProvider extends AbstractStorefrontProvider
         );
 
         if ($data === null) {
-            return null;
+            throw $this->exceptionFactory->createAbstractProductNotFoundException();
         }
 
         return (int)($data[static::KEY_ID_PRODUCT_ABSTRACT] ?? 0) ?: null;
@@ -123,10 +189,25 @@ class ProductReviewsStorefrontProvider extends AbstractStorefrontProvider
         return str_starts_with($this->getRequest()->getPathInfo(), static::CONCRETE_PRODUCTS_PATH_PREFIX);
     }
 
-    protected function mapReviewToResource(ProductReviewTransfer $review): ProductReviewsStorefrontResource
+    /**
+     * @param array<int, \Generated\Shared\Transfer\ProductReviewTransfer> $reviews
+     */
+    protected function findReviewById(array $reviews, string $idProductReview): ?ProductReviewTransfer
+    {
+        foreach ($reviews as $review) {
+            if ((string)$review->getIdProductReview() === $idProductReview) {
+                return $review;
+            }
+        }
+
+        return null;
+    }
+
+    protected function mapReviewToResource(ProductReviewTransfer $review, string $abstractProductSku): ProductReviewsStorefrontResource
     {
         $resource = new ProductReviewsStorefrontResource();
         $resource->idProductReview = (string)$review->getIdProductReview();
+        $resource->abstractProductSku = $abstractProductSku;
         $resource->rating = $review->getRating();
         $resource->nickname = $review->getNickname();
         $resource->summary = $review->getSummary();

@@ -4,6 +4,7 @@ resource:
     description: 'Storefront product reviews'
 
     provider: Spryker\Glue\ProductReviewsRestApi\Api\Storefront\Provider\ProductReviewsStorefrontProvider
+    processor: Spryker\Glue\ProductReviewsRestApi\Api\Storefront\Processor\ProductReviewsStorefrontProcessor
 
     paginationEnabled: true
     paginationClientEnabled: true
@@ -17,7 +18,47 @@ resource:
           description: 'Retrieve reviews for an abstract product'
           uriVariables:
               abstractProductSku:
-                  fromClass: AbstractProductsStorefrontResource
+                  identifiers: [abstractProductSku]
+
+        - type: Get
+          uriTemplate: /abstract-products/{abstractProductSku}/product-reviews/{idProductReview}
+          description: 'Retrieve a single review for an abstract product'
+          uriVariables:
+              abstractProductSku:
+                  identifiers: [abstractProductSku]
+              idProductReview:
+                  identifiers: [idProductReview]
+          openapiContext:
+              summary: 'Retrieve a product review'
+              responses:
+                  200:
+                      description: 'Product review returned.'
+                  400:
+                      description: 'Abstract product sku is not specified.'
+                  404:
+                      description: 'Abstract product or review not found.'
+
+        - type: Post
+          uriTemplate: /abstract-products/{abstractProductSku}/product-reviews
+          security: "is_granted('ROLE_CUSTOMER')"
+          status: 202
+          description: 'Submit a new review for an abstract product (authenticated customer).'
+          uriVariables:
+              abstractProductSku:
+                  identifiers: [abstractProductSku]
+          openapiContext:
+              summary: 'Create a product review'
+              responses:
+                  202:
+                      description: 'Review accepted for moderation.'
+                  400:
+                      description: 'Abstract product sku is not specified.'
+                  401:
+                      description: 'Missing or invalid access token.'
+                  404:
+                      description: 'Abstract product not found.'
+                  422:
+                      description: 'Validation failed.'
 
     properties:
         idProductReview:
@@ -29,38 +70,73 @@ resource:
             openapiContext:
                 example: '1'
 
-        rating:
-            type: integer
+        abstractProductSku:
+            type: string
             writable: false
             readable: true
             required: false
+            description: 'Parent abstract product SKU.'
+            openapiContext:
+                example: '001'
+
+        rating:
+            type: integer
+            writable: true
+            readable: true
+            required: true
             description: 'Rating given in the review'
             openapiContext:
                 example: 5
 
         nickname:
             type: string
-            writable: false
+            writable: true
             readable: true
-            required: false
+            required: true
             description: 'Reviewer nickname'
             openapiContext:
                 example: 'Spencer'
 
         summary:
             type: string
-            writable: false
+            writable: true
             readable: true
-            required: false
+            required: true
             description: 'Review summary'
             openapiContext:
                 example: 'Great camera!'
 
         description:
             type: string
-            writable: false
+            writable: true
             readable: true
             required: false
             description: 'Full review text'
             openapiContext:
                 example: 'This camera has been perfect for my needs. Image quality is excellent, the controls are intuitive, and the battery life is better than expected.'
+
+        pagination:
+            type: array
+            writable: false
+            readable: true
+            required: false
+            description: 'Pagination metadata for the collection. Populated only on the first item of a GET /abstract-products/{sku}/product-reviews response; consumed by PaginationLinksResponseSubscriber to emit JSON:API top-level pagination links (first/last/prev/next).'
+            openapiContext:
+                properties:
+                    numFound:
+                        type: integer
+                        example: 4
+                    currentPage:
+                        type: integer
+                        example: 1
+                    maxPage:
+                        type: integer
+                        example: 4
+                    currentItemsPerPage:
+                        type: integer
+                        example: 1
+                example:
+                    numFound: 4
+                    currentPage: 1
+                    maxPage: 4
+                    currentItemsPerPage: 1

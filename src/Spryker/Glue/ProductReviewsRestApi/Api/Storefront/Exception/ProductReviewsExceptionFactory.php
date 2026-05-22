@@ -23,4 +23,22 @@ class ProductReviewsExceptionFactory
             ProductReviewsRestApiConfig::RESPONSE_DETAIL_ABSTRACT_PRODUCT_SKU_IS_NOT_SPECIFIED,
         );
     }
+
+    public function createAbstractProductNotFoundException(): GlueApiException
+    {
+        return new GlueApiException(
+            Response::HTTP_NOT_FOUND,
+            ProductReviewsRestApiConfig::RESPONSE_CODE_CANT_FIND_ABSTRACT_PRODUCT,
+            ProductReviewsRestApiConfig::RESPONSE_DETAIL_CANT_FIND_ABSTRACT_PRODUCT,
+        );
+    }
+
+    public function createProductReviewNotFoundException(): GlueApiException
+    {
+        return new GlueApiException(
+            Response::HTTP_NOT_FOUND,
+            ProductReviewsRestApiConfig::RESPONSE_CODE_CANT_FIND_PRODUCT_REVIEW,
+            ProductReviewsRestApiConfig::RESPONSE_DETAIL_CANT_FIND_PRODUCT_REVIEW,
+        );
+    }
 }
