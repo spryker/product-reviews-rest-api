@@ -19,17 +19,6 @@ resource:
               abstractProductSku:
                   fromClass: AbstractProductsStorefrontResource
 
-    includableIn:
-        - resource: AbstractProducts
-          relationshipName: product-reviews
-          uriVariableMappings:
-              sku: abstractProductSku
-
-        - resource: ConcreteProducts
-          relationshipName: product-reviews
-          uriVariableMappings:
-              sku: concreteProductSku
-
     properties:
         idProductReview:
             type: string
