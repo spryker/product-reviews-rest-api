@@ -12,21 +12,29 @@ use Spryker\Glue\Kernel\AbstractBundleConfig;
 class ProductReviewsRestApiConfig extends AbstractBundleConfig
 {
     /**
+     * @api
+     *
      * @var string
      */
     public const RESOURCE_PRODUCT_REVIEWS = 'product-reviews';
 
     /**
+     * @api
+     *
      * @var string
      */
     public const CONTROLLER_PRODUCT_REVIEWS = 'product-reviews-resource';
 
     /**
+     * @api
+     *
      * @var string
      */
     public const RESPONSE_DETAIL_RESOURCE_NOT_IMPLEMENTED = 'Resource is not available.';
 
     /**
+     * @api
+     *
      * @uses \Spryker\Glue\ProductsRestApi\ProductsRestApiConfig::RESOURCE_ABSTRACT_PRODUCTS
      *
      * @var string
@@ -34,6 +42,8 @@ class ProductReviewsRestApiConfig extends AbstractBundleConfig
     public const RESOURCE_ABSTRACT_PRODUCTS = 'abstract-products';
 
     /**
+     * @api
+     *
      * @uses \Spryker\Glue\AuthRestApi\AuthRestApiConfig::RESPONSE_CODE_INVALID_OR_MISSING_ACCESS_TOKEN
      *
      * @var string
@@ -41,6 +51,8 @@ class ProductReviewsRestApiConfig extends AbstractBundleConfig
     public const RESPONSE_CODE_INVALID_OR_MISSING_ACCESS_TOKEN = '005';
 
     /**
+     * @api
+     *
      * @uses \Spryker\Glue\ProductsRestApi\ProductsRestApiConfig::RESPONSE_CODE_CANT_FIND_ABSTRACT_PRODUCT
      *
      * @var string
@@ -58,6 +70,8 @@ class ProductReviewsRestApiConfig extends AbstractBundleConfig
     public const RESPONSE_CODE_CANT_FIND_PRODUCT_REVIEW = '302';
 
     /**
+     * @api
+     *
      * @uses \Spryker\Glue\ProductsRestApi\ProductsRestApiConfig::RESPONSE_CODE_ABSTRACT_PRODUCT_SKU_IS_NOT_SPECIFIED
      *
      * @var string
@@ -65,6 +79,8 @@ class ProductReviewsRestApiConfig extends AbstractBundleConfig
     public const RESPONSE_CODE_ABSTRACT_PRODUCT_SKU_IS_NOT_SPECIFIED = '311';
 
     /**
+     * @api
+     *
      * @uses \Spryker\Glue\ProductsRestApi\ProductsRestApiConfig::RESPONSE_DETAIL_CANT_FIND_ABSTRACT_PRODUCT
      *
      * @var string
@@ -72,11 +88,15 @@ class ProductReviewsRestApiConfig extends AbstractBundleConfig
     public const RESPONSE_DETAIL_CANT_FIND_ABSTRACT_PRODUCT = 'Abstract product is not found.';
 
     /**
+     * @api
+     *
      * @var string
      */
     public const RESPONSE_DETAIL_CANT_FIND_PRODUCT_REVIEW = 'Product review is not found.';
 
     /**
+     * @api
+     *
      * @uses \Spryker\Glue\ProductsRestApi\ProductsRestApiConfig::RESPONSE_DETAIL_ABSTRACT_PRODUCT_SKU_IS_NOT_SPECIFIED
      *
      * @var string
