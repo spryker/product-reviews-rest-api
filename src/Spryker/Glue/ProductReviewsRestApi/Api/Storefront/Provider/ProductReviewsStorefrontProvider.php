@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Spryker\Glue\ProductReviewsRestApi\Api\Storefront\Provider;
 
+use Generated\Api\Storefront\ProductReviews\ProductReviewsPaginationStorefrontObject;
 use Generated\Api\Storefront\ProductReviewsStorefrontResource;
 use Generated\Shared\Transfer\ProductReviewSearchRequestTransfer;
 use Generated\Shared\Transfer\ProductReviewTransfer;
@@ -91,7 +92,7 @@ class ProductReviewsStorefrontProvider extends AbstractStorefrontProvider
             $totalCount = (int)($result[static::PAGINATION_KEY]?->getNumFound() ?? count($resources));
             // Consumed by Spryker\ApiPlatform\EventSubscriber\PaginationLinksResponseSubscriber
             // to emit JSON:API top-level pagination links (first/last/prev/next).
-            $resources[0]->pagination = $this->calculatePagination($offset, $limit, $totalCount);
+            $resources[0]->pagination = ProductReviewsPaginationStorefrontObject::fromArray($this->calculatePagination($offset, $limit, $totalCount));
         }
 
         return $resources;

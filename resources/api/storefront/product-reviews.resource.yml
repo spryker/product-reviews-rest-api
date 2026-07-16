@@ -116,27 +116,30 @@ resource:
                 example: 'This camera has been perfect for my needs. Image quality is excellent, the controls are intuitive, and the battery life is better than expected.'
 
         pagination:
-            type: array
+            type: object
+            objectName: Pagination
             writable: false
             readable: true
             required: false
             description: 'Pagination metadata for the collection. Populated only on the first item of a GET /abstract-products/{sku}/product-reviews response; consumed by PaginationLinksResponseSubscriber to emit JSON:API top-level pagination links (first/last/prev/next).'
-            openapiContext:
-                properties:
-                    numFound:
-                        type: integer
+            properties:
+                numFound:
+                    type: integer
+                    description: 'Total number of items found.'
+                    openapiContext:
                         example: 4
-                    currentPage:
-                        type: integer
+                currentPage:
+                    type: integer
+                    description: 'Current page number.'
+                    openapiContext:
                         example: 1
-                    maxPage:
-                        type: integer
+                maxPage:
+                    type: integer
+                    description: 'Total number of pages.'
+                    openapiContext:
                         example: 4
-                    currentItemsPerPage:
-                        type: integer
+                currentItemsPerPage:
+                    type: integer
+                    description: 'Number of items per page.'
+                    openapiContext:
                         example: 1
-                example:
-                    numFound: 4
-                    currentPage: 1
-                    maxPage: 4
-                    currentItemsPerPage: 1
