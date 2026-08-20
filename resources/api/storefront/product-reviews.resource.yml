@@ -19,6 +19,13 @@ resource:
           uriVariables:
               abstractProductSku:
                   identifiers: [abstractProductSku]
+          openapiContext:
+              summary: 'Retrieve the reviews of an abstract product'
+              responses:
+                  200:
+                      description: 'Product reviews returned.'
+                  404:
+                      description: 'Abstract product not found.'
 
         - type: Get
           uriTemplate: /abstract-products/{abstractProductSku}/product-reviews/{idProductReview}
@@ -33,8 +40,6 @@ resource:
               responses:
                   200:
                       description: 'Product review returned.'
-                  400:
-                      description: 'Abstract product sku is not specified.'
                   404:
                       description: 'Abstract product or review not found.'
 
@@ -51,10 +56,10 @@ resource:
               responses:
                   202:
                       description: 'Review accepted for moderation.'
-                  400:
-                      description: 'Abstract product sku is not specified.'
                   401:
-                      description: 'Missing or invalid access token.'
+                      description: 'Invalid access token.'
+                  403:
+                      description: 'Missing access token.'
                   404:
                       description: 'Abstract product not found.'
                   422:
