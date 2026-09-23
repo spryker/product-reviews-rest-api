@@ -19,6 +19,9 @@ resource:
           uriVariables:
               abstractProductSku:
                   identifiers: [abstractProductSku]
+          extraProperties:
+              notFoundCode: '301'
+              notFoundMessage: 'Abstract product is not found.'
           openapiContext:
               summary: 'Retrieve the reviews of an abstract product'
               responses:
@@ -35,6 +38,9 @@ resource:
                   identifiers: [abstractProductSku]
               idProductReview:
                   identifiers: [idProductReview]
+          extraProperties:
+              notFoundCode: '302'
+              notFoundMessage: 'Product review is not found.'
           openapiContext:
               summary: 'Retrieve a product review'
               responses:
