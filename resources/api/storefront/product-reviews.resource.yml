@@ -11,6 +11,9 @@ resource:
     paginationItemsPerPage: 10
     paginationMaximumItemsPerPage: 100
 
+    # Every operation here is nested under {abstractProductSku}, and the router never matches those
+    # templates with an empty segment — so the provider's missing-sku 400 is unreachable on all
+    # three and none of them declares it.
     operations:
         - type: GetCollection
           name: getProductReviewsByAbstractProductSku
