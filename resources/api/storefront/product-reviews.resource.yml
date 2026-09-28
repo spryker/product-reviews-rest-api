@@ -11,9 +11,9 @@ resource:
     paginationItemsPerPage: 10
     paginationMaximumItemsPerPage: 100
 
-    # Every operation here is nested under {abstractProductSku}, and the router never matches those
-    # templates with an empty segment — so the provider's missing-sku 400 is unreachable on all
-    # three and none of them declares it.
+    # An empty {abstractProductSku} segment does reach the two read operations — `/abstract-products//product-reviews`
+    # answers the provider's missing-sku 400 (code 311) — so both declare it. The Post never does:
+    # it is only ever reached with a body, and no request shape produces a 400 there.
     operations:
         - type: GetCollection
           name: getProductReviewsByAbstractProductSku
@@ -30,6 +30,8 @@ resource:
               responses:
                   200:
                       description: 'Product reviews returned.'
+                  400:
+                      description: 'Abstract product sku is not specified.'
                   404:
                       description: 'Abstract product not found.'
 
@@ -49,6 +51,8 @@ resource:
               responses:
                   200:
                       description: 'Product review returned.'
+                  400:
+                      description: 'Abstract product sku is not specified.'
                   404:
                       description: 'Abstract product or review not found.'
 
@@ -135,6 +139,7 @@ resource:
             writable: false
             readable: true
             required: false
+            collectionOnly: true
             description: 'Pagination metadata for the collection. Populated only on the first item of a GET /abstract-products/{sku}/product-reviews response; consumed by PaginationLinksResponseSubscriber to emit JSON:API top-level pagination links (first/last/prev/next).'
             properties:
                 numFound:
