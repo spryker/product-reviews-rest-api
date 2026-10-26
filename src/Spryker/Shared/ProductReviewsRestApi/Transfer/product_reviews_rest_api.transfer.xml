@@ -47,6 +47,10 @@
         <property name="customerReference" type="string" description="A unique reference for a customer."/>
         <property name="idProductAbstract" type="int"/>
         <property name="localeName" type="string" description="The name of a locale, such as 'en_US' or 'de_DE'."/>
+        <property name="rating" type="int"/>
+        <property name="nickname" type="string"/>
+        <property name="summary" type="string"/>
+        <property name="description" type="string"/>
     </transfer>
 
     <transfer name="ProductReviewStorage">
