@@ -42,8 +42,6 @@ class ProductReviewsStorefrontProvider extends AbstractStorefrontProvider
      */
     protected const string REQUEST_PARAM_ID_PRODUCT_REVIEW = 'idProductReview';
 
-    protected const string CONCRETE_PRODUCTS_PATH_PREFIX = '/concrete-products/';
-
     protected const int DEFAULT_REVIEWS_PER_PAGE = 10;
 
     public function __construct(
@@ -142,11 +140,11 @@ class ProductReviewsStorefrontProvider extends AbstractStorefrontProvider
     {
         $localeName = $this->getLocale()->getLocaleNameOrFail();
 
-        if ($this->isConcreteProductPath()) {
-            // Concrete-products path is reached only via `?include=product-reviews` from
-            // ConcreteProducts (no standalone /concrete-products/{sku}/product-reviews route).
-            // ConcreteProducts always provides a non-empty `sku`, so empty here is unexpected
-            // and is treated defensively as "no reviews".
+        if ($this->isConcreteProductRequest()) {
+            // The concrete URI variable is set only by `?include=product-reviews` on ConcreteProducts
+            // (no standalone /concrete-products/{sku}/product-reviews route). ConcreteProducts always
+            // provides a non-empty `sku`, so empty here is unexpected and is treated defensively as
+            // "no reviews".
             $sku = (string)($this->getUriVariables()[static::URI_VAR_CONCRETE_SKU] ?? '');
 
             if ($sku === '') {
@@ -185,9 +183,9 @@ class ProductReviewsStorefrontProvider extends AbstractStorefrontProvider
         return (int)($data[static::KEY_ID_PRODUCT_ABSTRACT] ?? 0) ?: null;
     }
 
-    protected function isConcreteProductPath(): bool
+    protected function isConcreteProductRequest(): bool
     {
-        return str_starts_with($this->getRequest()->getPathInfo(), static::CONCRETE_PRODUCTS_PATH_PREFIX);
+        return $this->hasUriVariable(static::URI_VAR_CONCRETE_SKU);
     }
 
     /**
